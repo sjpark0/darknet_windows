@@ -387,13 +387,13 @@ int main(int argc, char **argv)
     //test_resize("data/bad.jpg");
     //test_box();
     //test_convolutional_layer();
-	argv[1] = "classifier";
-	argv[2] = "predict";
-	argv[3] = "cfg/imagenet1k.data";
-	argv[4] = "cfg/extraction.cfg ";
-	argv[5] = "extraction.weights";
-	argv[6] = "data/eagle.jpg";
-	argc = 7;
+	/*argv[1] = "detect";
+	argv[2] = "cfg/yolo9000.cfg";
+	argv[3] = "yolo9000.weights";
+	argv[4] = "data/dog.jpg";
+	argv[5] = "-out";
+	argv[6] = "data/result.png";
+	argc = 7;*/
     if(argc < 2){
         fprintf(stderr, "usage: %s <function>\n", argv[0]);
         return 0;
@@ -422,11 +422,11 @@ int main(int argc, char **argv)
     } else if (0 == strcmp(argv[1], "detector")){
         run_detector(argc, argv);
     } else if (0 == strcmp(argv[1], "detect")){
-        float thresh = find_float_arg(argc, argv, "-thresh", .24);
+		float thresh = find_float_arg(argc, argv, "-thresh", .24);
         char *filename = (argc > 4) ? argv[4]: 0;
         char *outfile = find_char_arg(argc, argv, "-out", 0);
         int fullscreen = find_arg(argc, argv, "-fullscreen");
-        test_detector("cfg/coco.data", argv[2], argv[3], filename, thresh, .5, outfile, fullscreen);
+		test_detector("cfg/coco.data", argv[2], argv[3], filename, thresh, .5, outfile, fullscreen);
     } else if (0 == strcmp(argv[1], "cifar")){
         run_cifar(argc, argv);
     } else if (0 == strcmp(argv[1], "go")){
