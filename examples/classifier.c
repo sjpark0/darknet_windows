@@ -742,8 +742,8 @@ void threat_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_i
 
     while(1){
         ++count;
-        struct timeval tval_before, tval_after, tval_result;
-        gettimeofday(&tval_before, NULL);
+        //struct timeval tval_before, tval_after, tval_result;
+        //gettimeofday(&tval_before, NULL);
 
         image in = get_image_from_stream(cap);
         if(!in.data) break;
@@ -807,12 +807,12 @@ void threat_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_i
         }
         top_predictions(net, top, indexes);
         char buff[256];
-        sprintf(buff, "/home/pjreddie/tmp/threat_%06d", count);
+        //sprintf(buff, "/home/pjreddie/tmp/threat_%06d", count);
         //save_image(out, buff);
 
         printf("\033[2J");
         printf("\033[1;1H");
-        printf("\nFPS:%.0f\n",fps);
+        //printf("\nFPS:%.0f\n",fps);
 
         for(i = 0; i < top; ++i){
             int index = indexes[i];
@@ -826,10 +826,10 @@ void threat_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_i
         free_image(in_s);
         free_image(in);
 
-        gettimeofday(&tval_after, NULL);
-        timersub(&tval_after, &tval_before, &tval_result);
-        float curr = 1000000.f/((long int)tval_result.tv_usec);
-        fps = .9*fps + .1*curr;
+    //    gettimeofday(&tval_after, NULL);
+    //    timersub(&tval_after, &tval_before, &tval_result);
+    //    float curr = 1000000.f/((long int)tval_result.tv_usec);
+    //    fps = .9*fps + .1*curr;
     }
 #endif
 }
@@ -868,8 +868,8 @@ void gun_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_inde
     int i;
 
     while(1){
-        struct timeval tval_before, tval_after, tval_result;
-        gettimeofday(&tval_before, NULL);
+    //    struct timeval tval_before, tval_after, tval_result;
+    //    gettimeofday(&tval_before, NULL);
 
         image in = get_image_from_stream(cap);
         image in_s = resize_image(in, net->w, net->h);
@@ -903,10 +903,10 @@ void gun_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_inde
 
         cvWaitKey(10);
 
-        gettimeofday(&tval_after, NULL);
-        timersub(&tval_after, &tval_before, &tval_result);
-        float curr = 1000000.f/((long int)tval_result.tv_usec);
-        fps = .9*fps + .1*curr;
+   //     gettimeofday(&tval_after, NULL);
+   //     timersub(&tval_after, &tval_before, &tval_result);
+   //     float curr = 1000000.f/((long int)tval_result.tv_usec);
+    //    fps = .9*fps + .1*curr;
     }
 #endif
 }
@@ -942,8 +942,8 @@ void demo_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_ind
     int i;
 
     while(1){
-        struct timeval tval_before, tval_after, tval_result;
-        gettimeofday(&tval_before, NULL);
+    //    struct timeval tval_before, tval_after, tval_result;
+    //    gettimeofday(&tval_before, NULL);
 
         image in = get_image_from_stream(cap);
         image in_s = resize_image(in, net->w, net->h);
@@ -955,7 +955,7 @@ void demo_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_ind
 
         printf("\033[2J");
         printf("\033[1;1H");
-        printf("\nFPS:%.0f\n",fps);
+   //     printf("\nFPS:%.0f\n",fps);
 
         for(i = 0; i < top; ++i){
             int index = indexes[i];
@@ -967,10 +967,10 @@ void demo_classifier(char *datacfg, char *cfgfile, char *weightfile, int cam_ind
 
         cvWaitKey(10);
 
-        gettimeofday(&tval_after, NULL);
-        timersub(&tval_after, &tval_before, &tval_result);
-        float curr = 1000000.f/((long int)tval_result.tv_usec);
-        fps = .9*fps + .1*curr;
+   //     gettimeofday(&tval_after, NULL);
+   //     timersub(&tval_after, &tval_before, &tval_result);
+   //     float curr = 1000000.f/((long int)tval_result.tv_usec);
+   //     fps = .9*fps + .1*curr;
     }
 #endif
 }

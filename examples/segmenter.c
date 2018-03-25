@@ -196,8 +196,8 @@ void demo_segmenter(char *datacfg, char *cfg, char *weights, int cam_index, cons
     float fps = 0;
 
     while(1){
-        struct timeval tval_before, tval_after, tval_result;
-        gettimeofday(&tval_before, NULL);
+    //    struct timeval tval_before, tval_after, tval_result;
+    //    gettimeofday(&tval_before, NULL);
 
         image in = get_image_from_stream(cap);
         image in_s = letterbox_image(in, net->w, net->h);
@@ -218,10 +218,10 @@ void demo_segmenter(char *datacfg, char *cfg, char *weights, int cam_index, cons
 
         cvWaitKey(10);
 
-        gettimeofday(&tval_after, NULL);
-        timersub(&tval_after, &tval_before, &tval_result);
-        float curr = 1000000.f/((long int)tval_result.tv_usec);
-        fps = .9*fps + .1*curr;
+     //   gettimeofday(&tval_after, NULL);
+     //   timersub(&tval_after, &tval_before, &tval_result);
+     //   float curr = 1000000.f/((long int)tval_result.tv_usec);
+     //   fps = .9*fps + .1*curr;
     }
 #endif
 }
