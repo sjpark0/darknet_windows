@@ -12,7 +12,6 @@ extern void run_coco(int argc, char **argv);
 extern void run_captcha(int argc, char **argv);
 extern void run_nightmare(int argc, char **argv);
 extern void run_classifier(int argc, char **argv);
-extern void run_attention(int argc, char **argv);
 extern void run_regressor(int argc, char **argv);
 extern void run_segmenter(int argc, char **argv);
 extern void run_char_rnn(int argc, char **argv);
@@ -187,6 +186,25 @@ void partial(char *cfgfile, char *weightfile, char *outfile, int max)
     gpu_index = -1;
     network *net = load_network(cfgfile, weightfile, 1);
     save_weights_upto(net, outfile, max);
+}
+
+void print_weights(char *cfgfile, char *weightfile, int n)
+{
+    gpu_index = -1;
+    network *net = load_network(cfgfile, weightfile, 1);
+    layer l = net->layers[n];
+    int i, j;
+    //printf("[");
+    for(i = 0; i < l.n; ++i){
+        //printf("[");
+        for(j = 0; j < l.size*l.size*l.c; ++j){
+            //if(j > 0) printf(",");
+            printf("%g ", l.weights[i*l.size*l.size*l.c + j]);
+        }
+        printf("\n");
+        //printf("]%s\n", (i == l.n-1)?"":",");
+    }
+    //printf("]");
 }
 
 void rescale_net(char *cfgfile, char *weightfile, char *outfile)
@@ -387,21 +405,14 @@ int main(int argc, char **argv)
     //test_resize("data/bad.jpg");
     //test_box();
     //test_convolutional_layer();
-	/*argv[1] = "detect";
-	argv[2] = "cfg/yolo9000.cfg";
-	argv[3] = "yolo9000.weights";
-	argv[4] = "data/dog.jpg";
-	argv[5] = "-out";
-	argv[6] = "data/result.png";
-	argc = 7;*/
     if(argc < 2){
         fprintf(stderr, "usage: %s <function>\n", argv[0]);
         return 0;
     }
-    /*gpu_index = find_int_arg(argc, argv, "-i", 0);
+    gpu_index = find_int_arg(argc, argv, "-i", 0);
     if(find_arg(argc, argv, "-nogpu")) {
         gpu_index = -1;
-    }*/
+    }
 
 #ifndef GPU
     gpu_index = -1;
@@ -422,11 +433,11 @@ int main(int argc, char **argv)
     } else if (0 == strcmp(argv[1], "detector")){
         run_detector(argc, argv);
     } else if (0 == strcmp(argv[1], "detect")){
-		float thresh = find_float_arg(argc, argv, "-thresh", .24);
+        float thresh = find_float_arg(argc, argv, "-thresh", .5);
         char *filename = (argc > 4) ? argv[4]: 0;
         char *outfile = find_char_arg(argc, argv, "-out", 0);
         int fullscreen = find_arg(argc, argv, "-fullscreen");
-		test_detector("cfg/coco.data", argv[2], argv[3], filename, thresh, .5, outfile, fullscreen);
+        test_detector("cfg/coco.data", argv[2], argv[3], filename, thresh, .5, outfile, fullscreen);
     } else if (0 == strcmp(argv[1], "cifar")){
         run_cifar(argc, argv);
     } else if (0 == strcmp(argv[1], "go")){
@@ -439,8 +450,6 @@ int main(int argc, char **argv)
         predict_classifier("cfg/imagenet1k.data", argv[2], argv[3], argv[4], 5);
     } else if (0 == strcmp(argv[1], "classifier")){
         run_classifier(argc, argv);
-    } else if (0 == strcmp(argv[1], "attention")){
-        run_attention(argc, argv);
     } else if (0 == strcmp(argv[1], "regressor")){
         run_regressor(argc, argv);
     } else if (0 == strcmp(argv[1], "segmenter")){
@@ -477,6 +486,8 @@ int main(int argc, char **argv)
         oneoff(argv[2], argv[3], argv[4]);
     } else if (0 == strcmp(argv[1], "oneoff2")){
         oneoff2(argv[2], argv[3], argv[4], atoi(argv[5]));
+    } else if (0 == strcmp(argv[1], "print")){
+        print_weights(argv[2], argv[3], atoi(argv[4]));
     } else if (0 == strcmp(argv[1], "partial")){
         partial(argv[2], argv[3], argv[4], atoi(argv[5]));
     } else if (0 == strcmp(argv[1], "average")){

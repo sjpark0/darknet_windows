@@ -25,13 +25,7 @@ double get_wall_time()
 
 double what_time_is_it_now()
 {
-	//clock_t start = clock(); 
-	//double start_sec = start / CLOCKS_PER_SEC;
-
-	return (double)(GetTickCount() / 1000.0);
-    //struct timespec now;
-    //clock_gettime(0, &now);
-    //return now.tv_sec + now.tv_nsec*1e-9;
+	return (double)GetTickCount() / 1000.0;
 }
 
 int *read_intlist(char *gpu_list, int *ngpus, int d)
@@ -367,14 +361,14 @@ char *fgetl(FILE *fp)
 int read_int(int fd)
 {
     int n = 0;
-    int next = _read(fd, &n, sizeof(int));
+    int next = read(fd, &n, sizeof(int));
     if(next <= 0) return -1;
     return n;
 }
 
 void write_int(int fd, int n)
 {
-    int next = _write(fd, &n, sizeof(int));
+    int next = write(fd, &n, sizeof(int));
     if(next <= 0) error("read failed");
 }
 
@@ -382,7 +376,7 @@ int read_all_fail(int fd, char *buffer, size_t bytes)
 {
     size_t n = 0;
     while(n < bytes){
-        int next = _read(fd, buffer + n, bytes-n);
+        int next = read(fd, buffer + n, bytes-n);
         if(next <= 0) return 1;
         n += next;
     }
@@ -393,7 +387,7 @@ int write_all_fail(int fd, char *buffer, size_t bytes)
 {
     size_t n = 0;
     while(n < bytes){
-        size_t next = _write(fd, buffer + n, bytes-n);
+        size_t next = write(fd, buffer + n, bytes-n);
         if(next <= 0) return 1;
         n += next;
     }
@@ -404,7 +398,7 @@ void read_all(int fd, char *buffer, size_t bytes)
 {
     size_t n = 0;
     while(n < bytes){
-        int next = _read(fd, buffer + n, bytes-n);
+        int next = read(fd, buffer + n, bytes-n);
         if(next <= 0) error("read failed");
         n += next;
     }
@@ -414,7 +408,7 @@ void write_all(int fd, char *buffer, size_t bytes)
 {
     size_t n = 0;
     while(n < bytes){
-        size_t next = _write(fd, buffer + n, bytes-n);
+        size_t next = write(fd, buffer + n, bytes-n);
         if(next <= 0) error("write failed");
         n += next;
     }
@@ -629,6 +623,15 @@ int max_index(float *a, int n)
         }
     }
     return max_i;
+}
+
+int int_index(int *a, int val, int n)
+{
+    int i;
+    for(i = 0; i < n; ++i){
+        if(a[i] == val) return i;
+    }
+    return -1;
 }
 
 int rand_int(int min, int max)
