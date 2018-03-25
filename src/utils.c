@@ -25,10 +25,10 @@ double get_wall_time()
 
 double what_time_is_it_now()
 {
-	clock_t start = clock(); 
-	double start_sec = start / CLOCKS_PER_SEC;
+	//clock_t start = clock(); 
+	//double start_sec = start / CLOCKS_PER_SEC;
 
-	return start_sec;
+	return (double)(GetTickCount() / 1000.0);
     //struct timespec now;
     //clock_gettime(0, &now);
     //return now.tv_sec + now.tv_nsec*1e-9;
